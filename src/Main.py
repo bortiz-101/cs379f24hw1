@@ -55,22 +55,20 @@ X_test = test[['Pclass', 'Sex', 'Age', 'Fare']].values
 #Outcome
 y_train = train['Survived'].values
 
-# Min-Max Normalization function
-def min_max_scaling(X):
-    X_min = np.min(X, axis=0)
-    X_max = np.max(X, axis=0)
-    return (X - X_min) / (X_max - X_min)
+# Standardization
+def standardize(X):
+    mean = np.mean(X, axis=0)
+    std = np.std(X, axis=0)
+    return (X - mean) / std
 
-# Apply Min-Max Normalization
-X_train = min_max_scaling(X_train)
-X_test = min_max_scaling(X_test)
-
-# Initialize Adaline
-adaline = AdalineGD(eta=0.001, n_iter=500)
-adaline.fit(X_train, y_train)
+# Apply standardization to your training and test sets
+X_train_standardized = standardize(X_train)
+X_test_standardized = standardize(X_test)
 
 #Adaline prediction
-predictions = adaline.predict(X_test)
+adaline = AdalineGD(eta=0.001, n_iter=100)
+adaline.fit(X_train_standardized, y_train)
+predictions = adaline.predict(X_test_standardized)
 
 #Save predictions to a CSV file
 output = pd.DataFrame({'PassengerId': test['PassengerId'], 'Survived': predictions})
