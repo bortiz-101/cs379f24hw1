@@ -42,8 +42,8 @@ train['Sex'] = train['Sex'].map({'male': 0, 'female': 1})
 train['Age'].fillna(train['Age'].mean(), inplace=True)
 
 #Preprocessing test data (guessing which is important maybe change later ***)
-test['Sex'] = train['Sex'].map({'male': 0, 'female': 1})
-test['Age'].fillna(train['Age'].mean(), inplace=True)
+test['Sex'] = test['Sex'].map({'male': 0, 'female': 1})
+test['Age'].fillna(test['Age'].mean(), inplace=True)
 
 #Set typical variables for features and outcomes
 #Features
@@ -52,7 +52,7 @@ X_test = test[['Pclass', 'Sex', 'Age', 'Fare']].values
 
 #Outcome
 y_train = train['Survived'].values
-y_test = test['Survived'].values
+
 
 # Initialize Adaline
 adaline = AdalineGD(eta=0.01, n_iter=50)
