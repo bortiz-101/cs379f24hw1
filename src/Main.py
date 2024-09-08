@@ -83,33 +83,34 @@ merged_data = pd.merge(test, predictions_data, on='PassengerId')
 # Save the merged dataframe to a new CSV file
 merged_data.to_csv('merged_data.csv', index=False)
 
-# DataFrame creation
-data = {
-    'Pclass': [1, 2, 3, 1, 2, 3],
-    'Gender': ['male', 'female', 'female', 'male', 'female', 'male'],
-    'Age': [22, 35, 58, 24, 30, 45],
-    'Fare': [50, 20, 10, 60, 25, 15],
-    'Survived': [1, 0, 1, 1, 0, 0]
-}
-merged_data = pd.DataFrame(data)
+# Read merged data
+merged_data = pd.read_csv('merged_data.csv')
 
 # Calculate survival rates
 print(f"Overall Survival Rate: {merged_data['Survived'].mean():.2f}")
 
 print("\nSurvival Rate by Pclass:")
-print(merged_data.groupby('Pclass')['Survived'].mean())
+print(merged_data.groupby('Pclass', observed=True)['Survived'].mean())
 
-print("\nSurvival Rate by Gender:")
-print(merged_data.groupby('Gender')['Survived'].mean())
+print("\nSurvival Rate by Sex:")
+print(merged_data.groupby('Sex', observed=True)['Survived'].mean())
 
-# Create bins and calculate survival rates
-bins = {'Age': [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-        'Fare': [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+# Bins and labels for Age and Fare
+age_bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+age_labels = ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100']
 
-labels = {'Age': ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
-          'Fare': ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100']}
+fare_bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300]
+fare_labels = ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100', '100-200', '200-300']
 
-for column in ['Age', 'Fare']:
-    merged_data[f'{column}Group'] = pd.cut(merged_data[column], bins=bins[column], labels=labels[column])
-    print(f"\nSurvival Rate by {column} Group:")
-    print(merged_data.groupby(f'{column}Group', observed=True)['Survived'].mean())
+# Calculate survival rates for Age
+merged_data['AgeGroup'] = pd.cut(merged_data['Age'], bins=age_bins, labels=age_labels)
+print("\nSurvival Rate by Age Group:")
+print(merged_data.groupby('AgeGroup', observed=True)['Survived'].mean())
+
+# Calculate survival rates for Fare
+merged_data['FareGroup'] = pd.cut(merged_data['Fare'], bins=fare_bins, labels=fare_labels)
+print("\nSurvival Rate by Fare Group:")
+print(merged_data.groupby('FareGroup', observed=True)['Survived'].mean())
+print("Min Fare:", merged_data['Fare'].min())
+print("Max Fare:", merged_data['Fare'].max())
+print(merged_data['Fare'].describe())
