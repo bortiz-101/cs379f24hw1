@@ -60,7 +60,6 @@ adaline.fit(X_train, y_train)
 
 #Adaline prediction
 predictions = adaline.predict(X_test)
-print(predictions)
 
 #Save predictions to a CSV file
 output = pd.DataFrame({'PassengerId': test['PassengerId'], 'Survived': predictions})
