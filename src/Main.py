@@ -55,7 +55,7 @@ y_train = train['Survived'].values
 
 
 # Initialize Adaline
-adaline = AdalineGD(eta=0.01, n_iter=50)
+adaline = AdalineGD(eta=0.0001, n_iter=50)
 adaline.fit(X_train, y_train)
 
 #Adaline prediction
