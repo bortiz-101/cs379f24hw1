@@ -5,7 +5,8 @@ dirname = os.path.dirname(__file__)
 datadir = os.path.join(dirname, 'data')
 
 # Load dataset
-data = pd.read_csv(datadir + "/train.csv")
+train = pd.read_csv(datadir + "/train.csv")
+test = pd.read_csv(datadir + "/test.csv")
 
 # Adaline class for weight computation
 class AdalineGD(object):
@@ -36,16 +37,19 @@ class AdalineGD(object):
     def predict(self, X):
         return np.where(self.activation(X) >= 0.0, 1, -1)
 
-#Preprocessing data (guessing which is important maybe change later ***)
-data['Sex'] = data['Sex'].map({'male': 0, 'female': 1})
-data['Age'].fillna(data['Age'].mean(), inplace=True)
+#Preprocessing training data (guessing which is important maybe change later ***)
+train['Sex'] = train['Sex'].map({'male': 0, 'female': 1})
+train['Age'].fillna(train['Age'].mean(), inplace=True)
+
+#Preprocessing test data (guessing which is important maybe change later ***)
+test['Sex'] = train['Sex'].map({'male': 0, 'female': 1})
+test['Age'].fillna(train['Age'].mean(), inplace=True)
 
 #Set typical variables for features and outcomes
 #Features
-X = data[['Pclass', 'Sex', 'Age', 'Fare']].values
-#Outcome
-y = data['Survived'].values
+X_train = train[['Pclass', 'Sex', 'Age', 'Fare']].values
+X_test = test[['Pclass', 'Sex', 'Age', 'Fare']].values
 
-# Initialize Adaline
-adaline = AdalineGD(eta=0.01, n_iter=50)
-adaline.fit(X, y)
+#Outcome
+y_train = train['Survived'].values
+y_test = test['Survived'].values
