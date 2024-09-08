@@ -36,17 +36,12 @@ class AdalineGD(object):
     def predict(self, X):
         return np.where(self.activation(X) >= 0.0, 1, -1)
 
-
-# Example preprocessing (simplified, you should expand based on project needs)
+#Preprocessing data (guessing which is important maybe change later ***)
 data['Sex'] = data['Sex'].map({'male': 0, 'female': 1})
 data['Age'].fillna(data['Age'].mean(), inplace=True)
-X = data[['Pclass', 'Sex', 'Age', 'Fare']].values  # Features
-y = data['Survived'].values  # Labels
 
-# Initialize and fit the Adaline model
-adaline = AdalineGD(eta=0.01, n_iter=50)
-adaline.fit(X, y)
-
-# Make predictions
-predictions = adaline.predict(X)
-print(predictions)
+#Set typical variables for features and outcomes
+#Features
+X = data[['Pclass', 'Sex', 'Age', 'Fare']].values
+#Outcome
+y = data['Survived'].values
