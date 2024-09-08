@@ -61,7 +61,7 @@ def standardize(X):
     std = np.std(X, axis=0)
     return (X - mean) / std
 
-# Apply standardization to your training and test sets
+# Apply standardization
 X_train_standardized = standardize(X_train)
 X_test_standardized = standardize(X_test)
 
@@ -80,7 +80,7 @@ predictions_data = pd.read_csv('predictions.csv')
 # Merge the dataframes on 'PassengerId'
 merged_data = pd.merge(test, predictions_data, on='PassengerId')
 
-# Save the merged dataframe to a new CSV file
+# Save the merged
 merged_data.to_csv('merged_data.csv', index=False)
 
 # Read merged data
