@@ -75,3 +75,43 @@ predictions = adaline.predict(X_test)
 #Save predictions to a CSV file
 output = pd.DataFrame({'PassengerId': test['PassengerId'], 'Survived': predictions})
 output.to_csv('predictions.csv', index=False)
+
+#Initialize variable for predictions.csv
+predictions_data = pd.read_csv('predictions.csv')
+
+# Merge the dataframes on 'PassengerId'
+merged_data = pd.merge(test, predictions_data, on='PassengerId')
+
+# Save the merged dataframe to a new CSV file
+merged_data.to_csv('merged_data.csv', index=False)
+
+# DataFrame creation
+data = {
+    'Pclass': [1, 2, 3, 1, 2, 3],
+    'Gender': ['male', 'female', 'female', 'male', 'female', 'male'],
+    'Age': [22, 35, 58, 24, 30, 45],
+    'Fare': [50, 20, 10, 60, 25, 15],
+    'Survived': [1, 0, 1, 1, 0, 0]
+}
+merged_data = pd.DataFrame(data)
+
+# Calculate survival rates
+print(f"Overall Survival Rate: {merged_data['Survived'].mean():.2f}")
+
+print("\nSurvival Rate by Pclass:")
+print(merged_data.groupby('Pclass')['Survived'].mean())
+
+print("\nSurvival Rate by Gender:")
+print(merged_data.groupby('Gender')['Survived'].mean())
+
+# Create bins and calculate survival rates
+bins = {'Age': [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        'Fare': [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+
+labels = {'Age': ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
+          'Fare': ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100']}
+
+for column in ['Age', 'Fare']:
+    merged_data[f'{column}Group'] = pd.cut(merged_data[column], bins=bins[column], labels=labels[column])
+    print(f"\nSurvival Rate by {column} Group:")
+    print(merged_data.groupby(f'{column}Group', observed=True)['Survived'].mean())
