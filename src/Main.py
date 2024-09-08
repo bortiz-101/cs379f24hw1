@@ -53,3 +53,15 @@ X_test = test[['Pclass', 'Sex', 'Age', 'Fare']].values
 #Outcome
 y_train = train['Survived'].values
 y_test = test['Survived'].values
+
+# Initialize Adaline
+adaline = AdalineGD(eta=0.01, n_iter=50)
+adaline.fit(X_train, y_train)
+
+#Adaline prediction
+predictions = adaline.predict(X_test)
+print(predictions)
+
+#Save predictions to a CSV file
+output = pd.DataFrame({'PassengerId': test['PassengerId'], 'Survived': predictions})
+output.to_csv('predictions.csv', index=False)
