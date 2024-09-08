@@ -39,11 +39,11 @@ class AdalineGD(object):
 
 #Preprocessing training data (guessing which is important maybe change later ***)
 train['Sex'] = train['Sex'].map({'male': 0, 'female': 1})
-train['Age'].fillna(train['Age'].mean(), inplace=True)
+train['Age'] = train['Age'].fillna(train['Age'].mean())
 
 #Preprocessing test data (guessing which is important maybe change later ***)
 test['Sex'] = test['Sex'].map({'male': 0, 'female': 1})
-test['Age'].fillna(test['Age'].mean(), inplace=True)
+test['Age'] = test['Age'].fillna(test['Age'].mean())
 
 #Set typical variables for features and outcomes
 #Features
