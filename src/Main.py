@@ -45,3 +45,7 @@ data['Age'].fillna(data['Age'].mean(), inplace=True)
 X = data[['Pclass', 'Sex', 'Age', 'Fare']].values
 #Outcome
 y = data['Survived'].values
+
+# Initialize Adaline
+adaline = AdalineGD(eta=0.01, n_iter=50)
+adaline.fit(X, y)
